@@ -1,0 +1,1 @@
+var DeviceDetectionHelper;(function(n){function r(){return window.screen.width>=t&&window.screen.width<i}var t=600,i=1024;n.hasTabletScreenSize=r})(DeviceDetectionHelper||(DeviceDetectionHelper={}))

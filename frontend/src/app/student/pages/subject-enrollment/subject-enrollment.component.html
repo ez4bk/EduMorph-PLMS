@@ -1,0 +1,9 @@
+<app-table
+  [title]="title"
+  [disabledCreate]="true"
+  [disabledSelect]="true"
+  [disabledEdit]="true"
+  [columns]="attributes"
+  [data]="data"
+  (changeDataEvent)="getPage($event)"
+></app-table>
