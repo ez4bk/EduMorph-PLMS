@@ -21,6 +21,7 @@ import static ca.utoronto.lms.shared.security.SecurityUtils.ROLE_ADMIN;
 import static ca.utoronto.lms.shared.security.SecurityUtils.ROLE_ADMIN_ID;
 
 @Service
+//
 public class AdministratorService extends ExtendedService<Administrator, AdministratorDTO, Long> {
     private final AdministratorRepository repository;
     private final AdministratorMapper mapper;
@@ -38,6 +39,9 @@ public class AdministratorService extends ExtendedService<Administrator, Adminis
 
     @Override
     @Transactional
+    //save method from the superclass (ExtendedService). It is responsible for saving an administrator. Before saving, 
+    //it checks whether the associated user already exists. If not, it creates a new user using the UserFeignClient. 
+    //If the user already exists, it updates the user using the patchUser method. The resulting user information is then set in the administrator object, and the administrator is saved.
     public AdministratorDTO save(AdministratorDTO administrator) {
         UserDTO userRequest = administrator.getUser();
         UserDTO userResponse =
@@ -60,6 +64,9 @@ public class AdministratorService extends ExtendedService<Administrator, Adminis
 
     @Override
     @Transactional
+    // overrides the delete method from the superclass. It is responsible for deleting administrators. 
+    //It retrieves the user IDs associated with the administrators, 
+    //deletes those users using the deleteUser method from the UserFeignClient, and then performs a soft delete of the administrators using the softDeleteByIds method from the repository.
     public void delete(Set<Long> id) {
         List<Administrator> administrators = (List<Administrator>) repository.findAllById(id);
         Set<Long> userIds =
@@ -69,6 +76,7 @@ public class AdministratorService extends ExtendedService<Administrator, Adminis
     }
 
     @Override
+    // overrides the mapMissingValues method from the superclass. It is responsible for mapping missing values in a list of AdministratorDTO objects. It uses the UserFeignClient to fetch missing details related to users for each administrator.
     protected List<AdministratorDTO> mapMissingValues(List<AdministratorDTO> administrators) {
         map(
                 administrators,
@@ -79,6 +87,8 @@ public class AdministratorService extends ExtendedService<Administrator, Adminis
         return administrators;
     }
 
+
+//retrieves an administrator based on the associated user ID. If the administrator is not found, it throws a NotFoundException. Otherwise, it converts the administrator to a DTO using the mapper.
     public AdministratorDTO findByUserId(Long userId) {
         Administrator administrator =
                 repository

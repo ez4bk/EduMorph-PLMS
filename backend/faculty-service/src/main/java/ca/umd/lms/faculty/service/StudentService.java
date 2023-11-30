@@ -47,6 +47,11 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
         this.subjectFeignClient = subjectFeignClient;
     }
 
+
+    //overrides the findById method from the superclass (ExtendedService). It checks whether the user has the authority of a student and restricts access 
+    //if they try to view multiple students or a student other than themselves.
+
+
     @Override
     public List<StudentDTO> findById(Set<Long> id) {
         if (hasAuthority(ROLE_STUDENT) && (id.size() > 1 || !id.contains(getStudentId()))) {
@@ -58,6 +63,10 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
 
     @Override
     @Transactional
+
+    // overrides the save method from the superclass. It is responsible for saving a student. 
+    //Before saving, it checks whether the associated user already exists. If not, it creates a new user using the UserFeignClient. If the user already exists, 
+    //it updates the user using the patchUser method. The resulting user information is then set in the student object, and the student is saved.
     public StudentDTO save(StudentDTO student) {
         UserDTO userRequest = student.getUser();
         UserDTO userResponse =
@@ -80,6 +89,9 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
 
     @Override
     @Transactional
+    //overrides the delete method from the superclass. It is responsible for deleting students. 
+    //It retrieves the user IDs associated with the students, deletes those users using the deleteUser method from the UserFeignClient, 
+    //and then performs a soft delete of the students using the softDeleteByIds method from the repository.
     public void delete(Set<Long> id) {
         List<Student> students = (List<Student>) repository.findAllById(id);
         Set<Long> userIds = students.stream().map(Student::getUserId).collect(Collectors.toSet());
@@ -88,11 +100,15 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
     }
 
     @Override
+    //overrides the mapMissingValues method from the superclass. It is responsible for mapping missing values in a list of StudentDTO objects. 
+    //It uses the UserFeignClient to fetch missing details related to users for each student.
     protected List<StudentDTO> mapMissingValues(List<StudentDTO> students) {
         map(students, StudentDTO::getUser, StudentDTO::setUser, userFeignClient::getUser);
         return students;
     }
 
+
+    //retrieves a student based on the associated user ID. If the student is not found, it throws a NotFoundException. Otherwise, it converts the student to a DTO using the mapper.
     public StudentDTO findByUserId(Long userId) {
         Student student =
                 repository
@@ -101,6 +117,8 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
         return mapper.toDTO(student);
     }
 
+
+    //retrieves the ID of a student based on the associated user ID. If the student is not found, it throws a NotFoundException.
     public Long findIdByUserId(Long userId) {
         return repository
                 .findByUserId(userId)
@@ -109,11 +127,14 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
     }
 
     public List<StudentDTO> findBySubjectId(Long id) {
+        //uses subjectFeignClient.getStudentIdsBySubjectId(id) to obtain a set of student IDs associated with a given subject ID.
         Set<Long> studentIds = new HashSet<>(subjectFeignClient.getStudentIdsBySubjectId(id));
         List<StudentDTO> students = mapper.toDTO(repository.findByIdInAndDeletedFalse(studentIds));
         return students.isEmpty() ? students : mapMissingValues(students);
     }
 
+
+    // it retrieves a set of student IDs associated with a given subject ID.
     public Page<StudentDTO> findBySubjectId(Long id, Pageable pageable, String search) {
         Set<Long> studentIds = new HashSet<>(subjectFeignClient.getStudentIdsBySubjectId(id));
         Page<StudentDTO> students =
@@ -127,7 +148,9 @@ public class StudentService extends ExtendedService<Student, StudentDTO, Long> {
                         pageable,
                         students.getTotalElements());
     }
+//Retrieves the thesis ID associated with a student by calling the findByStudentId method on the thesisService.
 
+Returns the ID of the found thesis.
     public Long findThesisId(Long id) {
         return this.thesisService.findByStudentId(id).getId();
     }

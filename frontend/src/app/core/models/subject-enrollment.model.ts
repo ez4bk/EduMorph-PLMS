@@ -8,7 +8,8 @@ export interface SubjectEnrollment extends Base {
   extraPoints: number;
   grade: number;
 }
-
+// displaying information about SubjectEnrollment objects. They handle cases where the input subjectEnrollment is falsy,
+//returning an empty string to prevent potential errors. The actual display information for students and subjects is obtained by calling other functions (getStudentDisplay and getSubjectDisplay),
 export function getSubjectEnrollmentDisplay(
   subjectEnrollment: SubjectEnrollment
 ): string {

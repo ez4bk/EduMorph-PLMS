@@ -27,6 +27,8 @@ public class ExamPeriodService extends ExtendedService<ExamPeriod, ExamPeriodDTO
     }
 
     @Override
+    //mapMissingValues, is specifically tailored to handle the mapping of missing values for the faculty field in a list of ExamPeriodDTO objects, 
+    //and it uses the FacultyFeignClient to fetch the missing information.
     protected List<ExamPeriodDTO> mapMissingValues(List<ExamPeriodDTO> examPeriods) {
         map(
                 examPeriods,

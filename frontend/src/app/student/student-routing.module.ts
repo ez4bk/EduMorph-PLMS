@@ -9,6 +9,7 @@ import { InfoComponent } from './pages/info/info.component';
 import { ThesisComponent } from './pages/thesis/thesis.component';
 
 const routes: Routes = [
+  // major routes for all pages and component
   {
     path: '',
     component: StudentServicesComponent,

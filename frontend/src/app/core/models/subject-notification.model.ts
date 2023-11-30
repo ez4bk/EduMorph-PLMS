@@ -10,6 +10,7 @@ export interface SubjectNotification extends Base {
   subject: Subject;
 }
 
+//the display string is simply the name property of the subject notification. The getSubjectNotificationDisplay function incorporates a check to handle cases where the input subjectNotification is falsy, preventing potential errors.
 export function getSubjectNotificationDisplay(
   subjectNotification: SubjectNotification
 ): string {

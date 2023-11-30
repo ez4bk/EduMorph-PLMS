@@ -23,16 +23,22 @@ public class ExamTermController extends BaseController<ExamTerm, ExamTermDTO, Lo
     }
 
     @GetMapping("/subject/{id}/all")
+    //handles HTTP GET requests with the path "/exam-terms/subject/{id}/all". It retrieves a list of ExamTermDTO objects related to a specific subject ID. 
+    //The service.findBySubjectId(id) method is used to fetch the data
     public ResponseEntity<List<ExamTermDTO>> getBySubjectId(@PathVariable Long id) {
         return new ResponseEntity<>(service.findBySubjectId(id), HttpStatus.OK);
     }
 
     @GetMapping("/teacher/{id}/all")
+    //handles HTTP GET requests with the path "/exam-terms/teacher/{id}/all". It retrieves a list of ExamTermDTO objects related to a specific teacher ID. 
+    //The service.findByTeacherId(id) method is used to fetch the data.
     public ResponseEntity<List<ExamTermDTO>> getByTeacherId(@PathVariable Long id) {
         return new ResponseEntity<>(service.findByTeacherId(id), HttpStatus.OK);
     }
 
     @GetMapping("/student/{id}")
+    //handles HTTP GET requests with the path "/exam-terms/student/{id}". It retrieves a paginated list of ExamTermDTO objects related to a specific student ID. 
+    //The service.findByStudentId(id, pageable, search) method is used to fetch the data.
     public ResponseEntity<Page<ExamTermDTO>> getByStudentId(
             @PathVariable Long id,
             Pageable pageable,

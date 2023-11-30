@@ -10,13 +10,14 @@ export interface Exam extends Base {
   subject: Subject;
   examType: ExamType;
 }
-
+//function takes an Exam object as a parameter and returns a string representing the display information.
 export function getExamDisplay(exam: Exam): string {
   if (!exam) return '';
 
   return `${exam.subject.name} - ${exam.name}`;
 }
 
+//function is another utility function that takes an Exam object as a parameter and returns a string representing the display information.
 export function getExamNameDisplay(exam: Exam): string {
   if (!exam) return '';
 

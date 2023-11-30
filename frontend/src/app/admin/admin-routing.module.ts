@@ -17,6 +17,7 @@ import { TeacherComponent } from './pages/teacher/teacher.component';
 import { ThesisComponent } from './pages/thesis/thesis.component';
 
 const routes: Routes = [
+  // define a route to admin
   {
     path: '',
     component: AdminPanelComponent,

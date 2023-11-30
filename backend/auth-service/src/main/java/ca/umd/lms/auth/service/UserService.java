@@ -34,7 +34,10 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(
+    public UserService(//The constructor is used for dependency injection, initializing the UserService with instances of various components required for user management.
+    // These components include a UserRepository for data access, a UserMapper for mapping between entities and DTOs, 
+    //a UserDetailsService for retrieving user details, a TokenGenerator for handling tokens,
+    // AuthenticationManager for user authentication, and PasswordEncoder for encoding passwords.
             UserRepository repository,
             UserMapper mapper,
             UserDetailsService userDetailsService,
@@ -51,7 +54,9 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
     }
 
     @Override
-    @Transactional
+    @Transactional//This method overrides the save method from the superclass BaseService.
+    // It is annotated with @Transactional, indicating that the method is transactional.
+    // It encodes the user's password, sets various account-related flags, and then delegates the saving operation to the superclass.
     public UserDetailsDTO save(UserDetailsDTO userDetailsDTO) {
         userDetailsDTO.setPassword(passwordEncoder.encode(userDetailsDTO.getPassword()));
         userDetailsDTO.setAccountNonExpired(true);
@@ -61,7 +66,9 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
         return super.save(userDetailsDTO);
     }
 
-    @Transactional
+    @Transactional//This method updates an existing user based on the information provided in the UserDetailsDTO. 
+    //It retrieves the existing user, modifies the username and password if provided, 
+    //saves the changes, and returns the updated user details.
     public UserDetailsDTO update(UserDetailsDTO userDetailsDTO) {
         User existingUser =
                 repository
@@ -76,7 +83,9 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
 
         return this.mapper.toDTO(this.repository.save(existingUser));
     }
-
+    //This method retrieves a list of users by their IDs. 
+    //If the list is empty, indicating that no users were found, a NotFoundException is thrown. 
+    //It then maps the list of User entities to a list of UserDTO using the UserMapper
     public List<UserDTO> findByIdPublic(Set<Long> id) {
         List<User> users = (List<User>) this.repository.findAllById(id);
         if (users.isEmpty()) {
@@ -84,6 +93,8 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
         }
         return this.mapper.userToUserDTOList(users);
     }
+    //This method retrieves user details by username. It performs authorization checks to ensure that the caller has the necessary authority (ROLE_ADMIN) or is accessing their own details. 
+    //It then delegates the operation to the UserDetailsService.
 
     public UserDetailsDTO findByUsername(String username) throws UsernameNotFoundException {
         if (!getUsername().equals(username) && !hasAuthority(ROLE_ADMIN)) {
@@ -93,6 +104,7 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
         return (UserDetailsDTO) userDetailsService.loadUserByUsername(username);
     }
 
+    //This method retrieves the ID of a user by their username. If the username is not found, a NotFoundException is thrown.
     public Long findIdByUsername(String username) {
         return this.repository
                 .findByUsername(username)
@@ -100,6 +112,10 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
                 .getId();
     }
 
+
+    //This method handles user login. It creates a UsernamePasswordAuthenticationToken with the provided username and password, 
+    //authenticates the token using the AuthenticationManager, sets the authentication in the SecurityContextHolder, 
+    //and generates access and refresh tokens using the TokenGenerator.
     public TokensDTO login(UserDTO userDTO) {
        UsernamePasswordAuthenticationToken token =
                new UsernamePasswordAuthenticationToken(
@@ -113,7 +129,8 @@ public class UserService extends BaseService<User, UserDetailsDTO, Long> {
                 tokenGenerator.generateAccessToken(username),
                 tokenGenerator.generateRefreshToken(username));
     }
-
+    //This method handles token refresh. It extracts the token from the "Bearer" prefix, 
+    //refreshes the access token using the TokenGenerator, and returns a new set of tokens
     public TokensDTO refresh(String refreshToken) {
         refreshToken = refreshToken.substring(BEARER_PREFIX.length());
         return new TokensDTO(tokenGenerator.refreshAccessToken(refreshToken), refreshToken);

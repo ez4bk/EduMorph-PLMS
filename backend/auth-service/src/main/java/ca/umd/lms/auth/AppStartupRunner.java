@@ -15,7 +15,9 @@ import java.util.Set;
 import static ca.utoronto.lms.shared.security.SecurityUtils.*;
 
 @Component
-@RequiredArgsConstructor
+@RequiredArgsConstructor//the AppStartupRunner class is used to ensure that essential roles and a default admin user are available in the system when the Spring Boot application starts.
+// This is particularly useful for initializing the system with default data, ensuring a smooth start for the application.
+// The use of the forceSave methods suggests that the roles and the user are created if they do not already exist in the database.
 public class AppStartupRunner implements ApplicationRunner {
     private final RoleService roleService;
     private final UserService userService;

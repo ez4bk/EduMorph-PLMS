@@ -37,6 +37,8 @@ public class TeacherService extends ExtendedService<Teacher, TeacherDTO, Long> {
     @Override
     @Transactional
     public TeacherDTO save(TeacherDTO teacher) {
+        //It checks if the user already exists based on the user ID. If the user doesn't exist (userRequest.getId() == null), 
+        //it uses the userFeignClient to create a new user with the specified details, including the username, password, and role.
         UserDTO userRequest = teacher.getUser();
         UserDTO userResponse =
                 userRequest.getId() == null
@@ -53,12 +55,14 @@ public class TeacherService extends ExtendedService<Teacher, TeacherDTO, Long> {
                                         .build())
                         : userFeignClient.patchUser(userRequest.getId(), userRequest);
         teacher.setUser(userResponse);
+        //Finally, it calls the super.save(teacher) method to save the teacher entity.
         return super.save(teacher);
     }
 
     @Override
     @Transactional
     public void delete(Set<Long> id) {
+        //responsible for deleting one or more teachers.
         List<Teacher> teachers = (List<Teacher>) repository.findAllById(id);
         Set<Long> userIds = teachers.stream().map(Teacher::getUserId).collect(Collectors.toSet());
         userFeignClient.deleteUser(userIds);
@@ -66,11 +70,14 @@ public class TeacherService extends ExtendedService<Teacher, TeacherDTO, Long> {
     }
 
     @Override
+    //responsible for mapping missing values for a list of teachers.
     protected List<TeacherDTO> mapMissingValues(List<TeacherDTO> teachers) {
         map(teachers, TeacherDTO::getUser, TeacherDTO::setUser, userFeignClient::getUser);
         return teachers;
     }
 
+
+    // retrieves a teacher based on the provided user ID.
     public TeacherDTO findByUserId(Long userId) {
         Teacher teacher =
                 repository

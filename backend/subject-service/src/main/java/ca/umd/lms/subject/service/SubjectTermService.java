@@ -43,6 +43,11 @@ public class SubjectTermService extends ExtendedService<SubjectTerm, SubjectTerm
 
     @Override
     @Transactional
+    //Allows the addition of subject terms.
+//Checks if the user has the ROLE_TEACHER authority.
+//Ensures that the teacher attempting to add terms is associated with the subject.
+//If the teacher is not explicitly set in the subjectTermDTO, it sets it to the teacher making the request.
+//Uses the super.save method to save the subject term.
     public SubjectTermDTO save(SubjectTermDTO subjectTermDTO) {
         if (hasAuthority(ROLE_TEACHER)) {
             TeacherDTO teacher = facultyFeignClient.getTeacher(Set.of(getTeacherId())).get(0);
@@ -62,6 +67,10 @@ public class SubjectTermService extends ExtendedService<SubjectTerm, SubjectTerm
 
     @Override
     @Transactional
+    //Allows the deletion of subject terms identified by the given IDs.
+//Checks if the user has the ROLE_TEACHER authority.
+//Verifies that the teacher attempting to delete terms is associated with the subject.
+//Uses the super.delete method to perform the deletion within a transactional context.
     public void delete(Set<Long> id) {
         if (hasAuthority(ROLE_TEACHER)) {
             Long teacherId = getTeacherId();
@@ -83,6 +92,8 @@ public class SubjectTermService extends ExtendedService<SubjectTerm, SubjectTerm
     }
 
     @Override
+    //Maps missing values, specifically the teacher, in the list of subject term DTOs.
+//Utilizes the facultyFeignClient to retrieve teacher information based on teacher IDs.
     protected List<SubjectTermDTO> mapMissingValues(List<SubjectTermDTO> subjectTerms) {
         map(
                 subjectTerms,
@@ -92,7 +103,9 @@ public class SubjectTermService extends ExtendedService<SubjectTerm, SubjectTerm
 
         return subjectTerms;
     }
-
+//Retrieves a list of subject terms based on the given subject ID.
+//Orders the subject terms by start time in descending order.
+//Checks if the subject exists; otherwise, throws a NotFoundException.
     public List<SubjectTermDTO> findBySubjectId(Long id) {
         if (!subjectRepository.existsById(id)) {
             throw new NotFoundException("Subject not found");
@@ -102,7 +115,9 @@ public class SubjectTermService extends ExtendedService<SubjectTerm, SubjectTerm
                 mapper.toDTO(repository.findBySubjectIdAndDeletedFalseOrderByStartTimeDesc(id));
         return subjectTerms.isEmpty() ? subjectTerms : this.mapMissingValues(subjectTerms);
     }
-
+//Retrieves a page of subject terms based on the given subject ID, pageable information, and search criteria.
+//Uses the repository to perform the query.
+//Maps missing values in the retrieved subject terms.
     public Page<SubjectTermDTO> findBySubjectId(Long id, Pageable pageable, String search) {
         if (!subjectRepository.existsById(id)) {
             throw new NotFoundException("Subject not found");

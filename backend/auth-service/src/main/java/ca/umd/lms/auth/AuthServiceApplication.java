@@ -22,4 +22,5 @@ public class AuthServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class, args);
     }
-}
+}// the AuthServiceApplication class configures and starts a Spring Boot application with Eureka client support, Feign client capabilities, 
+//component scanning for specific packages, and OpenAPI documentation generation. It is a typical configuration class for a microservices-based authentication service.

@@ -45,6 +45,10 @@ public class SubjectMaterialService
 
     @Override
     @Transactional
+    //Saves a new SubjectMaterialDTO or updates an existing one.
+//Checks if the user has the ROLE_TEACHER authority.
+//Verifies that the teacher attempting to save the material is associated with the subject.
+//If the teacher field is not provided in the DTO, it is set to the teacher making the request.
     public SubjectMaterialDTO save(SubjectMaterialDTO subjectMaterialDTO) {
         if (hasAuthority(ROLE_TEACHER)) {
             TeacherDTO teacher = facultyFeignClient.getTeacher(Set.of(getTeacherId())).get(0);
@@ -65,6 +69,9 @@ public class SubjectMaterialService
 
     @Override
     @Transactional
+    //Deletes subject materials by their IDs.
+//Checks if the user has the ROLE_TEACHER authority.
+//Verifies that the teacher attempting to delete the materials is associated with the subject of each material.
     public void delete(Set<Long> id) {
         if (hasAuthority(ROLE_TEACHER)) {
             Long teacherId = getTeacherId();
@@ -88,6 +95,8 @@ public class SubjectMaterialService
     }
 
     @Override
+    //Maps missing values in a list of SubjectMaterialDTO by fetching additional details from external services (facultyFeignClient).
+//Specifically maps the teacher associated with each subject material.
     protected List<SubjectMaterialDTO> mapMissingValues(List<SubjectMaterialDTO> subjectMaterials) {
         map(
                 subjectMaterials,
@@ -97,7 +106,9 @@ public class SubjectMaterialService
 
         return subjectMaterials;
     }
-
+//Retrieves subject materials based on the subject ID.
+//Throws a NotFoundException if the subject with the given ID is not found.
+//Checks for missing values and maps them using the mapMissingValues method.
     public List<SubjectMaterialDTO> findBySubjectId(Long id) {
         if (!subjectRepository.existsById(id)) {
             throw new NotFoundException("Subject not found");
@@ -128,3 +139,5 @@ public class SubjectMaterialService
                         subjectMaterials.getTotalElements());
     }
 }
+//class provides methods for saving, deleting, and retrieving subject materials. 
+//It enforces authorization rules based on user roles, ensures the association between teachers and subjects, and maps missing values to enhance the completeness of the data.

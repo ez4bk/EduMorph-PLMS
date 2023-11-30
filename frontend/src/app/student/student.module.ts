@@ -12,6 +12,7 @@ import { ThesisComponent } from './pages/thesis/thesis.component';
 import { DialogRegisterComponent } from './pages/exam-term/dialog-register/dialog-register.component';
 
 @NgModule({
+  // declear for all component
   declarations: [
     StudentServicesComponent,
     SubjectComponent,

@@ -41,6 +41,9 @@ public class ExamTermService extends ExtendedService<ExamTerm, ExamTermDTO, Long
     }
 
     @Override
+    //overrides the mapMissingValues method from the superclass (ExtendedService). It's responsible for mapping missing values in a list of ExamTermDTO objects. 
+    //Specifically, it uses a Feign client (subjectFeignClient) to fetch missing details related to subjects for each exam term.
+    // The map method seems to be a utility method for performing this mapping operation.
     protected List<ExamTermDTO> mapMissingValues(List<ExamTermDTO> examTerms) {
         map(
                 examTerms,
@@ -50,13 +53,15 @@ public class ExamTermService extends ExtendedService<ExamTerm, ExamTermDTO, Long
 
         return examTerms;
     }
-
+// retrieves a list of ExamTermDTO objects based on the provided subject ID. It uses the mapper to convert ExamTerm entities to ExamTermDTO objects and then calls the mapMissingValues method to fill in missing subject details.
     public List<ExamTermDTO> findBySubjectId(Long id) {
         List<ExamTermDTO> examTerms =
                 mapper.toDTO(repository.findByExamSubjectIdAndDeletedFalseOrderByStartTimeDesc(id));
         return examTerms.isEmpty() ? examTerms : this.mapMissingValues(examTerms);
     }
 
+
+//retrieves a list of ExamTermDTO objects based on the provided teacher ID. It uses a Feign client to get subject IDs associated with the teacher and then retrieves exam terms for those subjects. Similar to findBySubjectId, it also calls mapMissingValues to fill in missing subject details.
     public List<ExamTermDTO> findByTeacherId(Long id) {
         List<Long> subjectIds =
                 subjectFeignClient.getSubjectByTeacherId(id).stream()
@@ -69,7 +74,8 @@ public class ExamTermService extends ExtendedService<ExamTerm, ExamTermDTO, Long
                                 subjectIds));
         return examTerms.isEmpty() ? examTerms : this.mapMissingValues(examTerms);
     }
-
+//retrieves a paginated list of ExamTermDTO objects based on the provided student ID and search criteria. 
+//It involves complex logic to filter and fetch exam terms based on subject enrollments, exam realizations, and registered exam terms. Similar to the previous methods, it also calls mapMissingValues to fill in missing subject details.
     public Page<ExamTermDTO> findByStudentId(Long id, Pageable pageable, String search) {
         if (hasAuthority(ROLE_STUDENT) && !id.equals(getStudentId())) {
             throw new ForbiddenException("You are not allowed to view these exam terms");
