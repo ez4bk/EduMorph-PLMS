@@ -33,5 +33,4 @@ Spring Boot: Empowering the backend with rapid development capabilities.
 Spring Cloud: Enabling cloud-native, distributed microservices.
 MySQL: Serving as the backbone database engine to store and manage academic data securely.
 Docker: Facilitating seamless deployment and scaling through containerization.
-Angular: Providing a robust framework for building scalable and maintainable web applications
 With Edumorph, your educational institution stands at the forefront of personalized learning management, empowering you to deliver tailored educational experiences and streamline administrative workflows. Elevate the learning journey for all stakeholders with Edumorph!
