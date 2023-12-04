@@ -6,16 +6,15 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 
 const routes: Routes = [
   {
-    path: '', //This route represents the default path that redirects to the HomeModule when the application starts
+    path: '',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   {
-    path: 'auth', //route is for the 'auth' path, loading the AuthModule and activating the LoggedInAuthGuard guard
+    path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
     canActivate: [LoggedInAuthGuard],
   },
   {
-    //Route for 'student-services', loading StudentModule, activating AuthGuard, and specifying role-based authorization data.
     path: 'student-services',
     loadChildren: () =>
       import('./student/student.module').then((m) => m.StudentModule),
@@ -26,7 +25,6 @@ const routes: Routes = [
     },
   },
   {
-    //Route for 'teacher-services', loading TeacherModule, activating AuthGuard, and specifying role-based authorization data.
     path: 'teacher-services',
     loadChildren: () =>
       import('./teacher/teacher.module').then((m) => m.TeacherModule),
@@ -37,7 +35,6 @@ const routes: Routes = [
     },
   },
   {
-    //Route for 'admin-panel', loading AdminModule, activating AuthGuard, and specifying role-based authorization data.
     path: 'admin-panel',
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),

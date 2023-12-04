@@ -50,9 +50,6 @@ public class SubjectService extends ExtendedService<Subject, SubjectDTO, Long> {
 
         return subjects;
     }
-    //Retrieves a list of subjects based on the given study program ID.
-//Orders the subjects by semester, then by name.
-//Maps missing values in the retrieved subjects.
 
     public List<SubjectDTO> findByStudyProgramId(Long id) {
         List<SubjectDTO> subjects =
@@ -62,9 +59,6 @@ public class SubjectService extends ExtendedService<Subject, SubjectDTO, Long> {
         return subjects.isEmpty() ? subjects : this.mapMissingValues(subjects);
     }
 
-//Retrieves a list of subjects based on the given teacher ID.
-//Orders the subjects by semester, then by name.
-//Maps missing values in the retrieved subjects.
     public List<SubjectDTO> findByTeacherId(Long id) {
         List<SubjectDTO> subjects =
                 mapper.toDTO(
@@ -73,9 +67,7 @@ public class SubjectService extends ExtendedService<Subject, SubjectDTO, Long> {
                                         id, id));
         return subjects.isEmpty() ? subjects : this.mapMissingValues(subjects);
     }
-//Retrieves a list of subjects based on the given student ID.
-//Checks for authorization to view the student's subjects.
-//Maps missing values in the retrieved subjects.
+
     public List<SubjectDTO> findByStudentId(Long id) {
         if (hasAuthority(ROLE_STUDENT) && !id.equals(getStudentId())) {
             throw new ForbiddenException("You are not allowed to view this student");
@@ -87,10 +79,6 @@ public class SubjectService extends ExtendedService<Subject, SubjectDTO, Long> {
     }
 
     @Transactional
-    //Updates the syllabus of a subject identified by the given ID.
-//Checks if the user has the ROLE_TEACHER authority.
-//Verifies that the teacher attempting to update the syllabus is associated with the subject.
-//Performs the update within a transactional context.
     public SubjectDTO updateSyllabus(Long id, String syllabus) {
         Subject subject =
                 repository

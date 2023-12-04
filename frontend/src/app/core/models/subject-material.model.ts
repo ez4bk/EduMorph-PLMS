@@ -12,7 +12,6 @@ export interface SubjectMaterial extends Base {
 }
 
 export function getSubjectMaterialDisplay(
-  //function incorporates a check to handle cases where the input subjectMaterial is falsy, preventing potential errors.
   subjectMaterial: SubjectMaterial
 ): string {
   if (!subjectMaterial) return '';

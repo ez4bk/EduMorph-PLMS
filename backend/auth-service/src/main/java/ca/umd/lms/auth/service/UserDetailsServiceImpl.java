@@ -13,9 +13,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-
-//UserDetailsServiceImpl class serves as a custom implementation of the Spring Security UserDetailsService. 
-//It retrieves user details based on the username from a data repository, converts the user entity to a DTO using a mapper, and returns the user details for authentication purposes.
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository repository;
     private final UserMapper mapper;

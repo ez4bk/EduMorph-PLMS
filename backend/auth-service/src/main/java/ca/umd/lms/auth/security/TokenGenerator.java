@@ -23,8 +23,7 @@ import static ca.utoronto.lms.shared.security.SecurityUtils.*;
 
 @Component
 @RequiredArgsConstructor
-public class TokenGenerator {//TokenGenerator class encapsulates the logic for generating and refreshing access 
-//and refresh tokens based on user authentication. 
+public class TokenGenerator {
     private final UserRepository userRepository;
     private final FacultyFeignClient facultyFeignClient;
     private final TokenUtils tokenUtils;
@@ -45,8 +44,7 @@ public class TokenGenerator {//TokenGenerator class encapsulates the logic for g
         }
         return generateAccessToken(username);
     }
-    //This method generates an access token using the provided username. It builds the token using the Jwts builder, including claims like subject, issuance time, expiration time, and user-related information.
-    // The token is then signed using the specified algorithm and secret key.
+
     public String generateAccessToken(String username) {
         Map<String, Object> claims = generateClaims(username);
         return Jwts.builder()
@@ -67,8 +65,7 @@ public class TokenGenerator {//TokenGenerator class encapsulates the logic for g
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
-    //This private method generates claims for the token based on the provided username. 
-    //It includes information such as the user's ID, roles (authorities), and additional data depending on the user's roles (admin, teacher, or student).
+
     private Map<String, Object> generateClaims(String username) {
         Map<String, Object> claims = new HashMap<>();
 
@@ -90,8 +87,7 @@ public class TokenGenerator {//TokenGenerator class encapsulates the logic for g
 
         return claims;
     }
-    //This private method validates a user based on the provided username. It retrieves the user from the UserRepository and checks if the user exists and is not deleted.
-    // If the user is not found or is deleted, exceptions (NotFoundException or BadRequestException) are thrown.
+
     private User validateUser(String username) {
         User user =
                 userRepository

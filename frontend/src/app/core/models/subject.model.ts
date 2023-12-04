@@ -11,7 +11,7 @@ export interface Subject extends Base {
   professor: Teacher;
   assistant: Teacher;
 }
-// get display strings for Subject objects. The first function (getSubjectDisplay) is straightforward, displaying only the subject name. The second function (getSubjectWithStudyProgramDisplay) provides a more detailed display by including information about the associated study program.
+
 export function getSubjectDisplay(subject: Subject): string {
   if (!subject) return '';
 

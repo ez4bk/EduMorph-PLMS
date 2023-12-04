@@ -45,10 +45,6 @@ public class SubjectNotificationService
 
     @Override
     @Transactional
-    //Saves a new SubjectNotificationDTO or updates an existing one.
-//Checks if the user has the ROLE_TEACHER authority.
-//Verifies that the teacher attempting to save the notification is associated with the subject.
-//If the teacher field is not provided in the DTO, it is set to the teacher making the request.
     public SubjectNotificationDTO save(SubjectNotificationDTO subjectNotificationDTO) {
         if (hasAuthority(ROLE_TEACHER)) {
             TeacherDTO teacher = facultyFeignClient.getTeacher(Set.of(getTeacherId())).get(0);
@@ -69,9 +65,6 @@ public class SubjectNotificationService
 
     @Override
     @Transactional
-    //Deletes subject notifications by their IDs.
-//Checks if the user has the ROLE_TEACHER authority.
-//Verifies that the teacher attempting to delete the notifications is associated with the subject of each notification.
     public void delete(Set<Long> id) {
         if (hasAuthority(ROLE_TEACHER)) {
             Long teacherId = getTeacherId();
@@ -95,8 +88,6 @@ public class SubjectNotificationService
     }
 
     @Override
-    //Maps missing values in a list of SubjectNotificationDTO by fetching additional details from external services (facultyFeignClient).
-//Specifically maps the teacher associated with each subject notification.
     protected List<SubjectNotificationDTO> mapMissingValues(
             List<SubjectNotificationDTO> subjectNotifications) {
         map(
@@ -107,9 +98,7 @@ public class SubjectNotificationService
 
         return subjectNotifications;
     }
-//Retrieves subject notifications based on the subject ID.
-//Throws a NotFoundException if the subject with the given ID is not found.
-//Checks for missing values and maps them using the mapMissingValues method.
+
     public List<SubjectNotificationDTO> findBySubjectId(Long id) {
         if (!subjectRepository.existsById(id)) {
             throw new NotFoundException("Subject not found");

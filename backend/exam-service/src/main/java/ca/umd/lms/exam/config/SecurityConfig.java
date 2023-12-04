@@ -14,13 +14,11 @@ import static ca.utoronto.lms.shared.security.SecurityUtils.*;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {//class configures security for a Spring web application. 
-//It sets up a security filter chain, defines rules for authentication and authorization, 
+public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationTokenFilter authenticationTokenFilter)
             throws Exception {
-        return http//This method defines a SecurityFilterChain bean, which configures the security filters for the application. 
-        //The http parameter represents the HttpSecurity object, and authenticationTokenFilter is a custom filter for handling authentication tokens.
+        return http
                 .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

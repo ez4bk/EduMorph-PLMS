@@ -51,7 +51,6 @@ public class ExamRealizationService
     }
 
     @Override
-    // Overridden method to map missing values
     protected List<ExamRealizationDTO> mapMissingValues(List<ExamRealizationDTO> examRealizations) {
         map(
                 examRealizations,
@@ -61,7 +60,7 @@ public class ExamRealizationService
 
         return examRealizations;
     }
-    // Method to find exam realizations by exam term id
+
     public List<ExamRealizationDTO> findByExamTermId(Long id) {
         if (!examTermRepository.existsById(id)) {
             throw new NotFoundException("Exam term id not found");
@@ -83,9 +82,7 @@ public class ExamRealizationService
         return examRealizations.isEmpty() ? examRealizations : mapMissingValues(examRealizations);
     }
 
-   // Method to find exam realizations by exam term id with pagination and search
     public Page<ExamRealizationDTO> findByExamTermId(Long id, Pageable pageable, String search) {
-        // Implementation omitted for brevity
         if (!examTermRepository.existsById(id)) {
             throw new NotFoundException("Exam term id not found");
         }
@@ -113,7 +110,6 @@ public class ExamRealizationService
                         examRealizations.getTotalElements());
     }
 
-    // Method to find exam realizations by student id with pagination and search
     public Page<ExamRealizationDTO> findByStudentId(Long id, Pageable pageable, String search) {
         if (hasAuthority(ROLE_STUDENT) && !id.equals(getStudentId())) {
             throw new ForbiddenException("You are not allowed to view these exam realizations.");
@@ -138,7 +134,6 @@ public class ExamRealizationService
                         examRealizations.getTotalElements());
     }
 
-    //// Transactional method to create exam realizations by exam term id
     @Transactional
     public List<ExamRealizationDTO> createByExamTermId(Set<Long> examTermIds) {
         boolean notExists =
@@ -174,7 +169,7 @@ public class ExamRealizationService
 
         return mapper.toDTO((List<ExamRealization>) repository.saveAll(examRealizations));
     }
-    // // Transactional method to update scores for multiple exam realizations by exam term id
+
     @Transactional
     public ExamRealizationDTO updateScore(Long id, ExamRealizationDTO examRealizationDTO) {
         ExamRealizationDTO examRealization = findById(Set.of(id)).get(0);
@@ -194,8 +189,6 @@ public class ExamRealizationService
         return mapper.toDTO(updatedExamRealization);
     }
 
-
-    //// Transactional method to update scores for multiple exam realizations by exam term id
     @Transactional
     public List<ExamRealizationDTO> updateScoresByExamTermId(
             Long id, List<ExamRealizationDTO> examRealizationsDTO) {

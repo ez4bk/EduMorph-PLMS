@@ -30,8 +30,6 @@ public class ThesisService extends BaseService<Thesis, ThesisDTO, Long> {
 
     @Override
     @Transactional
-
-    // responsible for saving a thesis.
     public ThesisDTO save(ThesisDTO thesisDTO) {
         ThesisDTO savedThesisDTO = super.save(thesisDTO);
 
@@ -60,7 +58,6 @@ public class ThesisService extends BaseService<Thesis, ThesisDTO, Long> {
 
     @Override
     @Transactional
-    //responsible for deleting one or more theses.
     public void delete(Set<Long> ids) {
         List<Thesis> thesis = (List<Thesis>) repository.findAllById(ids);
         thesis.forEach(
@@ -74,7 +71,6 @@ public class ThesisService extends BaseService<Thesis, ThesisDTO, Long> {
         repository.softDeleteByIds(ids);
     }
 
-    //retrieves a thesis based on the provided student ID.
     public ThesisDTO findByStudentId(Long id) {
         Thesis thesis =
                 repository

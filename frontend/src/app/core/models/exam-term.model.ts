@@ -8,16 +8,15 @@ export interface ExamTerm extends Base {
   exam: Exam;
   examPeriod: ExamPeriod;
 }
-// provide a way to get formatted display strings for ExamTerm objects.
-// function is a utility function that takes an ExamTerm object as a parameter and returns a string representing the display information.
+
 export function getExamTermDisplay(examTerm: ExamTerm): string {
   if (!examTerm) return '';
-  //if the examTerm is falsy (e.g., null or undefined), and if so, it returns an empty string.
+
   return `${getExamDisplay(examTerm.exam)} - ${getExamPeriodDisplay(
     examTerm.examPeriod
   )}`;
 }
-//function is another utility function that takes an ExamTerm object as a parameter and returns a string representing the display information.
+
 export function getExamTermWithoutSubjectDisplay(examTerm: ExamTerm): string {
   if (!examTerm) return '';
 
