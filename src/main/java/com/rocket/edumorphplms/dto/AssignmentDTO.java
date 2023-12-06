@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class AssignmentDTO {
     private Long assignmentId;
-    private CourseDTO courseDTO; // Use CourseDTO here
+    private Long courseId; 
     private String title;
     private String description;
     private LocalDate dueDate;
@@ -13,9 +13,9 @@ public class AssignmentDTO {
     public AssignmentDTO() {
     }
 
-    public AssignmentDTO(Long assignmentId, CourseDTO courseDTO, String title, String description, LocalDate dueDate) {
+    public AssignmentDTO(Long assignmentId, Long courseId, String title, String description, LocalDate dueDate) {
         this.assignmentId = assignmentId;
-        this.courseDTO = courseDTO;
+        this.courseId = courseId;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -30,12 +30,12 @@ public class AssignmentDTO {
         this.assignmentId = assignmentId;
     }
 
-    public CourseDTO getCourseDTO() {
-        return courseDTO;
+    public Long getCourseId() {
+        return courseId;
     }
 
-    public void setCourseDTO(CourseDTO courseDTO) {
-        this.courseDTO = courseDTO;
+    public void setCourseId(Long courseId) {
+        this.courseId = courseId;
     }
 
     public String getTitle() {
@@ -61,4 +61,5 @@ public class AssignmentDTO {
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
+    
 }

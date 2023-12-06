@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import com.rocket.edumorphplms.dto.AssignmentDTO;
 import com.rocket.edumorphplms.entity.Assignment;
 import com.rocket.edumorphplms.repository.AssignmentRepository;
-
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -34,7 +32,7 @@ public class AssignmentService {
             Assignment assignment = assignmentOptional.get();
             AssignmentDTO assignmentDTO = new AssignmentDTO();
             assignmentDTO.setAssignmentId(assignment.getAssignmentId());
-           //  assignmentDTO.setCourseId(assignment.getCourseId());
+            assignmentDTO.setCourseId(assignment.getCourseId());
             assignmentDTO.setTitle(assignment.getTitle());
             assignmentDTO.setDescription(assignment.getDescription());
             assignmentDTO.setDueDate(assignment.getDueDate());

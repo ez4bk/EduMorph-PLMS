@@ -1,5 +1,9 @@
 package com.rocket.edumorphplms.dto;
 
+import com.rocket.edumorphplms.entity.Enrollment;
+import com.rocket.edumorphplms.entity.Assignment;
+
+
 public class StudentGradeDTO {
     private Long gradeId;
     private Long enrollmentId;
@@ -48,5 +52,18 @@ public class StudentGradeDTO {
 
     public void setGrade(Double grade) {
         this.grade = grade;
+    }
+
+    // Custom setters
+    public void setEnrollmentId(Enrollment enrollment) {
+        if (enrollment != null) {
+            this.enrollmentId = enrollment.getEnrollmentId();
+        }
+    }
+
+    public void setAssignmentId(Assignment assignment) {
+        if (assignment != null) {
+            this.assignmentId = assignment.getAssignmentId();
+        }
     }
 }
