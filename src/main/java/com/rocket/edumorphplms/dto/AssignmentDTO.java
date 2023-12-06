@@ -1,32 +1,21 @@
-package com.rocket.edumorphplms.entity;
+package com.rocket.edumorphplms.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-public class Assignment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class AssignmentDTO {
     private Long assignmentId;
-
-    @ManyToOne
-    @JoinColumn(name = "Course_ID")
-    private Course course;
-
-    @Column(nullable = false)
+    private CourseDTO courseDTO; // Use CourseDTO here
     private String title;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
-
-    @Column(nullable = false)
     private LocalDate dueDate;
 
     // Constructors
-    public Assignment() {
+    public AssignmentDTO() {
     }
 
-    public Assignment(String title, String description, LocalDate dueDate) {
+    public AssignmentDTO(Long assignmentId, CourseDTO courseDTO, String title, String description, LocalDate dueDate) {
+        this.assignmentId = assignmentId;
+        this.courseDTO = courseDTO;
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -41,12 +30,12 @@ public class Assignment {
         this.assignmentId = assignmentId;
     }
 
-    public Course getCourse() {
-        return course;
+    public CourseDTO getCourseDTO() {
+        return courseDTO;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseDTO(CourseDTO courseDTO) {
+        this.courseDTO = courseDTO;
     }
 
     public String getTitle() {
@@ -71,12 +60,5 @@ public class Assignment {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
-    }
-    
-    public Long getCourseId() {
-        if (course != null) {
-            return course.getCourseId();
-        }
-        return null;
     }
 }

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  mysql-server:
+    image: mysql:8.0.30-debian
+    platform: linux/amd64
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+   
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: edumorph
+
+volumes:
+  mysql_data:

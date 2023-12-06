@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        ddl-auto: update
+  datasource:
+    url: jdbc:mysql://localhost:3307/edumorph?createDatabaseIfNotExist=true
+    username: root
+    password: root

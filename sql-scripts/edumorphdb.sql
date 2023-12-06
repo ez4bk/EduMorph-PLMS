@@ -1,16 +1,9 @@
-CREATE TABLE Users (
-    User_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(255) NOT NULL,
-    Password VARCHAR(255) NOT NULL,
-    Email VARCHAR(255) NOT NULL,
-    UserType ENUM('Student', 'Instructor', 'Admin') NOT NULL
-);
-
+USE edumorph;
 --
 -- Dumping data for table `Users`
 --
 
-INSERT INTO Users (Username, Password, Email, UserType)
+INSERT INTO `user` (Username, Password, Email, User_Type)
 VALUES
     ('user1', 'password1', 'user1@umd.edu', 'Admin'),
     ('user2', 'password2', 'user2@umd.edu', 'Admin'),
@@ -165,19 +158,12 @@ VALUES
     ('user151', 'password151', 'user151@umd.edu', 'Student'),
     ('user152', 'password152', 'user152@umd.edu', 'Student');
 
-CREATE TABLE Courses (
-    Course_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Course_Name VARCHAR(255) NOT NULL,
-    Instructor_ID INT,
-    Description TEXT,
-    FOREIGN KEY (Instructor_ID) REFERENCES Users(User_ID)
-);
 
 --
 -- Dumping data for table `Course`
 --
 
-INSERT INTO Courses (Course_Name, Instructor_ID, Description)
+INSERT INTO `course` (Course_Name, Instructor_ID, Description)
 VALUES
     ('Course 1', 3, 'Description for Course 1'),
     ('Course 2', 4, 'Description for Course 2'),
@@ -189,22 +175,15 @@ VALUES
     ('Course 8', 10, 'Description for Course 8');
 
 
-CREATE TABLE Content (
-    Content_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Course_ID INT,
-    Content_Name VARCHAR(255) NOT NULL,
-    Content TEXT,
-    FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
-);
 
 -- Insert sample content data for all courses
-INSERT INTO Content (Course_ID, Content_Name, Content)
+INSERT INTO `content` (Course_ID, Content_Name, Content)
 SELECT
     C.Course_ID,
     CONCAT('Content for Course ', C.Course_ID, ', Content ', Numbers.n) AS Content_Name,
     CONCAT('This is content for Course ', C.Course_ID, ', Content ', Numbers.n, '.') AS Content
 FROM
-    Courses C
+    `course` C
 CROSS JOIN (
     SELECT 1 AS n UNION ALL
     SELECT 2 UNION ALL
@@ -217,17 +196,9 @@ CROSS JOIN (
 ) AS Numbers;
 
 
-CREATE TABLE Enrollments (
-    Enrollment_ID INT AUTO_INCREMENT PRIMARY KEY,
-    User_ID INT,
-    Course_ID INT,
-    TotalGrade DECIMAL(5, 2), -- You can adjust the precision and scale as needed
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
-    FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
-);
 
 -- Insert sample enrollment data for 50 students with different course combinations
-INSERT INTO Enrollments (User_ID, Course_ID, TotalGrade)
+INSERT INTO `enrollment` (User_ID, Course_ID, total_grade)
 VALUES
     (11, 1, 92.5),
     (11, 2, 88.0),
@@ -354,17 +325,9 @@ VALUES
     (50, 2, 94.5),
     (50, 6, 89.0);
 
-CREATE TABLE Assignments (
-    Assignment_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Course_ID INT,
-    Title VARCHAR(255) NOT NULL,
-    Description TEXT,
-    Due_Date DATE,
-    FOREIGN KEY (Course_ID) REFERENCES Courses(Course_ID)
-);
 
 -- Insert sample assignment data for 10 assignments
-INSERT INTO Assignments (Course_ID, Title, Description, Due_Date)
+INSERT INTO `assignment` (Course_ID, Title, Description, Due_Date)
 VALUES
     (1, 'Assignment 1', 'Description for Assignment 1', '2023-01-15'),
     (1, 'Assignment 2', 'Description for Assignment 2', '2023-02-05'),
@@ -378,17 +341,8 @@ VALUES
     (5, 'Assignment 2', 'Description for Assignment 2', '2023-02-25');
 
 
-CREATE TABLE StudentGrades (
-    Grade_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Enrollment_ID INT,
-    Assignment_ID INT,
-    Grade DECIMAL(5, 2), -- You can adjust the precision and scale as needed
-    FOREIGN KEY (Enrollment_ID) REFERENCES Enrollments(Enrollment_ID),
-    FOREIGN KEY (Assignment_ID) REFERENCES Assignments(Assignment_ID)
-);
-
 -- Insert sample student grades data for 50 entries
-INSERT INTO StudentGrades (Enrollment_ID, Assignment_ID, Grade)
+INSERT INTO `student_grade` (Enrollment_ID, Assignment_ID, Grade)
 VALUES
     (1, 1, 92.5),
     (1, 2, 88.0),

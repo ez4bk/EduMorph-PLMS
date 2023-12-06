@@ -1,7 +1,6 @@
 package com.rocket.edumorphplms.entity;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
 @Entity
 public class StudentGrade {
@@ -18,13 +17,13 @@ public class StudentGrade {
     private Assignment assignment;
 
     @Column(precision = 5, scale = 2)
-    private BigDecimal grade;
+    private Double grade;
 
     // Constructors
     public StudentGrade() {
     }
 
-    public StudentGrade(Enrollment enrollment, Assignment assignment, BigDecimal grade) {
+    public StudentGrade(Enrollment enrollment, Assignment assignment, Double grade) {
         this.enrollment = enrollment;
         this.assignment = assignment;
         this.grade = grade;
@@ -55,11 +54,11 @@ public class StudentGrade {
         this.assignment = assignment;
     }
 
-    public BigDecimal getGrade() {
+    public Double getGrade() {
         return grade;
     }
 
-    public void setGrade(BigDecimal grade) {
+    public void setGrade(Double grade) {
         this.grade = grade;
     }
 }

@@ -10,6 +10,4 @@ import com.rocket.edumorphplms.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
 
-    // Custom query to find students by course
-    List<User> findByEnrollmentsCourse(Course course);
 }

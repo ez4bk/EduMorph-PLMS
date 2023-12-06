@@ -9,7 +9,7 @@ import com.rocket.edumorphplms.service.UserService;
 import com.rocket.edumorphplms.dto.UserDTO;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
