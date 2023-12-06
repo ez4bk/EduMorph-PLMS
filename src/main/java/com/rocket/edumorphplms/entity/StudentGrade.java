@@ -16,7 +16,7 @@ public class StudentGrade {
     @JoinColumn(name = "Assignment_ID")
     private Assignment assignment;
 
-    @Column(precision = 5, scale = 2)
+    @Column(columnDefinition = "NUMERIC(5,2)")
     private Double grade;
 
     // Constructors

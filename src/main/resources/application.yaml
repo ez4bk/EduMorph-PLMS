@@ -6,8 +6,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
+    hibernate:
         ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:3307/edumorph?createDatabaseIfNotExist=true
     username: root
     password: root
+

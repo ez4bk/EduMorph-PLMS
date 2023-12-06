@@ -2,6 +2,7 @@ package com.rocket.edumorphplms.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
@@ -9,7 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import com.rocket.edumorphplms.dto.UserType;
 
-
+@Table(name = "User")
 @Entity
 public class User {
 
