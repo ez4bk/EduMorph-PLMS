@@ -9,19 +9,16 @@ import com.rocket.edumorphplms.entity.Content;
 import com.rocket.edumorphplms.entity.Course;
 import com.rocket.edumorphplms.repository.ContentRepository;
 import com.rocket.edumorphplms.repository.CourseRepository;
-import com.rocket.edumorphplms.repository.UserRepository;
 
 @Service
 public class ContentService {
     
-    private final ContentRepository contentRepository;
-    private final CourseRepository courseRepository;
+    @Autowired
+    private ContentRepository contentRepository;
 
     @Autowired
-    public ContentService(ContentRepository contentRepository, CourseRepository courseRepository) {
-        this.contentRepository = contentRepository;
-        this.courseRepository = courseRepository;
-    }
+    private CourseRepository courseRepository;
+
 
     public ContentDTO createContent(ContentDTO contentDTO) {
         // Check if the associated course exists

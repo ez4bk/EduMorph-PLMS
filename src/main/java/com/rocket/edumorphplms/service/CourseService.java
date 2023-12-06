@@ -5,6 +5,7 @@ import com.rocket.edumorphplms.dto.UserDTO;
 import com.rocket.edumorphplms.entity.Course;
 import com.rocket.edumorphplms.entity.Enrollment;
 import com.rocket.edumorphplms.entity.User;
+import com.rocket.edumorphplms.exception.CourseNotFoundException;
 import com.rocket.edumorphplms.repository.CourseRepository;
 import com.rocket.edumorphplms.repository.EnrollmentRepository;
 import com.rocket.edumorphplms.repository.UserRepository;
@@ -19,19 +20,24 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
-    
-    @Autowired
-    private EnrollmentRepository enrollmentRepository;
-    
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
+    private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = convertToCourseEntity(courseDTO);
         Course savedCourse = courseRepository.save(course);
         return convertToCourseDTO(savedCourse);
+    }
+
+    public List<CourseDTO> getAllCourses() {
+        List<Course> courses = courseRepository.findAll();
+        return courses.stream()
+                .map(this::convertToCourseDTO)
+                .collect(Collectors.toList());
     }
 
     public List<CourseDTO> getCoursesByInstructor(UserDTO instructorDTO) {
@@ -42,12 +48,9 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
-    public CourseDTO getCourseById(Long courseId) {
-        Course course = courseRepository.findById(courseId).orElse(null);
-        if (course == null) {
-            // Handle course not found
-            return null;
-        }
+    public CourseDTO getCourseById(Long courseId) throws CourseNotFoundException {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException("Course not found with ID: " + courseId));
         CourseDTO courseDTO = convertToCourseDTO(course);
         List<UserDTO> enrolledStudents = getEnrolledStudents(course); // Populate enrolled students
         courseDTO.setEnrolledStudents(enrolledStudents);
@@ -65,7 +68,6 @@ public class CourseService {
                 .map(this::convertToUserDTO)
                 .collect(Collectors.toList());
     }
-
 
     private CourseDTO convertToCourseDTO(Course course) {
         CourseDTO courseDTO = new CourseDTO();

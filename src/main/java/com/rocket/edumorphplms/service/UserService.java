@@ -5,36 +5,38 @@ import org.springframework.stereotype.Service;
 import com.rocket.edumorphplms.repository.UserRepository;
 import com.rocket.edumorphplms.dto.UserDTO;
 import com.rocket.edumorphplms.entity.User;
-
-import java.util.Collections;
+import com.rocket.edumorphplms.exception.UserNotFoundException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    
+
     public UserDTO getUserById(Long userId) {
-        // Fetch user from userRepository by userId
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
 
-        List<User> users = userRepository.findAllById(Collections.singletonList(userId));
-        User user = users.isEmpty() ? null : users.get(0);
+        return convertToDTO(user);
+    }
 
-        if (user == null) {
-            // Handle user not found
-            return null;
-        }
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
 
-        // Convert the User entity to UserDTO
+    private UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
         userDTO.setUsername(user.getUsername());
         userDTO.setPassword(user.getPassword());
         userDTO.setEmail(user.getEmail());
         userDTO.setUserType(user.getUserType());
-
         return userDTO;
     }
 }

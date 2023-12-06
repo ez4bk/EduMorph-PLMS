@@ -1,26 +1,32 @@
 package com.rocket.edumorphplms.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import com.rocket.edumorphplms.dto.EnrollmentDTO;
 import com.rocket.edumorphplms.service.EnrollmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/enrollments")
+@RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
     @Autowired
     private EnrollmentService enrollmentService;
 
     @PostMapping
-    public EnrollmentDTO createEnrollment(@RequestBody EnrollmentDTO enrollmentDTO) {
-        return enrollmentService.createEnrollment(enrollmentDTO);
+    public ResponseEntity<EnrollmentDTO> createEnrollment(@RequestBody EnrollmentDTO enrollmentDTO) {
+        EnrollmentDTO createdEnrollment = enrollmentService.createEnrollment(enrollmentDTO);
+        return new ResponseEntity<>(createdEnrollment, HttpStatus.CREATED);
     }
 
     @GetMapping("/{enrollmentId}")
-    public EnrollmentDTO getEnrollmentById(@PathVariable Long enrollmentId) {
-        return enrollmentService.getEnrollmentById(enrollmentId);
+    public ResponseEntity<EnrollmentDTO> getEnrollmentById(@PathVariable Long enrollmentId) {
+        EnrollmentDTO enrollmentDTO = enrollmentService.getEnrollmentById(enrollmentId);
+        if (enrollmentDTO != null) {
+            return new ResponseEntity<>(enrollmentDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }
