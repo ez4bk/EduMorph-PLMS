@@ -12,5 +12,8 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findByUser(User user);
     List<Enrollment> findByCourse(Course course);
-    List<Enrollment> findByUserId(Long userId);
+    // Create a custom query method to find enrollments by user ID
+    List<Enrollment> findByUserUserId(Long userId);
+    // Create a custom query method to find enrollments by course ID
+    List<Enrollment> findByCourseCourseId(Long courseId);
 }

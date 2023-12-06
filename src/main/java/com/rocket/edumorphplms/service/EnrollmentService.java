@@ -70,7 +70,7 @@ public class EnrollmentService {
     }
 
     public List<EnrollmentDTO> getEnrollmentsByUserId(Long userId) {
-        List<Enrollment> enrollmentList = enrollmentRepository.findByUserId(userId);
+        List<Enrollment> enrollmentList = enrollmentRepository.findByUserUserId(userId);
 
         // Convert Enrollment entities to EnrollmentDTOs
         List<EnrollmentDTO> enrollmentDTOList = enrollmentList.stream()
@@ -90,7 +90,15 @@ public class EnrollmentService {
     }
 
     public List<EnrollmentDTO> getEnrollmentsByCourseId(Long courseId) {
-        return null;
+        // Retrieve enrollments by course ID from the repository
+        List<Enrollment> enrollmentList = enrollmentRepository.findByCourseCourseId(courseId);
+
+        // Convert Enrollment entities to EnrollmentDTOs
+        List<EnrollmentDTO> enrollmentDTOList = enrollmentList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return enrollmentDTOList;
     }
 
 }
