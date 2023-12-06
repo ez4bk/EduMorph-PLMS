@@ -8,6 +8,7 @@ import com.rocket.edumorphplms.entity.User;
 import com.rocket.edumorphplms.exception.UserNotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,4 +40,21 @@ public class UserService {
         userDTO.setUserType(user.getUserType());
         return userDTO;
     }
+
+    public UserDTO getUserByEmailAndPassword(String email, String password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+    
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            if (user.getPassword().equals(password)) {
+                return convertToDTO(user);
+            }
+        }
+    
+        throw new UserNotFoundException("User with email " + email + " and password not found");
+    }
+    
+    
+    
+    
 }

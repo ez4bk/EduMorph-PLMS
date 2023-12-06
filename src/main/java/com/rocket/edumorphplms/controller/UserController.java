@@ -1,6 +1,7 @@
 package com.rocket.edumorphplms.controller;
 
 import com.rocket.edumorphplms.dto.UserDTO;
+import com.rocket.edumorphplms.exception.UserNotFoundException;
 import com.rocket.edumorphplms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,4 +36,18 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
+
+    @GetMapping("/authenticate")
+    public ResponseEntity<UserDTO> authenticateUser(
+        @RequestParam(name = "email") String email,
+        @RequestParam(name = "password") String password) {
+    try {
+        UserDTO userDTO = userService.getUserByEmailAndPassword(email, password);
+        return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    } catch (UserNotFoundException e) {
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    }
+}
+
+
 }

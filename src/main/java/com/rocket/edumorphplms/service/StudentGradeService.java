@@ -7,6 +7,8 @@ import com.rocket.edumorphplms.dto.StudentGradeDTO;
 import com.rocket.edumorphplms.entity.StudentGrade;
 import com.rocket.edumorphplms.repository.StudentGradeRepository;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class StudentGradeService {
@@ -25,6 +27,26 @@ public class StudentGradeService {
             studentGradeDTO.setGrade(studentGrade.getGrade());
             return studentGradeDTO;
 
+    }
+
+    public List<StudentGradeDTO> getStudentGradesByEnrollmentId(Long enrollmentId) {
+        List<StudentGrade> studentGradeList = studentGradeRepository.findByEnrollmentEnrollmentId(enrollmentId);
+
+        // Convert StudentGrade entities to StudentGradeDTOs
+        List<StudentGradeDTO> studentGradeDTOList = studentGradeList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return studentGradeDTOList;
+    }
+
+    private StudentGradeDTO convertToDTO(StudentGrade studentGrade) {
+        StudentGradeDTO studentGradeDTO = new StudentGradeDTO();
+        studentGradeDTO.setGradeId(studentGrade.getGradeId());
+        studentGradeDTO.setEnrollmentId(studentGrade.getEnrollment().getEnrollmentId());
+        studentGradeDTO.setAssignmentId(studentGrade.getAssignment().getAssignmentId());
+        studentGradeDTO.setGrade(studentGrade.getGrade());
+        return studentGradeDTO;
     }
 
 }

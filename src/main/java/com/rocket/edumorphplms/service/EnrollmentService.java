@@ -11,7 +11,9 @@ import com.rocket.edumorphplms.repository.CourseRepository;
 import com.rocket.edumorphplms.repository.EnrollmentRepository;
 import com.rocket.edumorphplms.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EnrollmentService {
@@ -65,6 +67,30 @@ public class EnrollmentService {
             enrollmentDTO.setCourseId(enrollment.getCourse().getCourseId());
             enrollmentDTO.setTotalGrade(enrollment.getTotalGrade());
             return enrollmentDTO;
+    }
+
+    public List<EnrollmentDTO> getEnrollmentsByUserId(Long userId) {
+        List<Enrollment> enrollmentList = enrollmentRepository.findByUserId(userId);
+
+        // Convert Enrollment entities to EnrollmentDTOs
+        List<EnrollmentDTO> enrollmentDTOList = enrollmentList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return enrollmentDTOList;
+    }
+
+    private EnrollmentDTO convertToDTO(Enrollment enrollment) {
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO();
+        enrollmentDTO.setEnrollmentId(enrollment.getEnrollmentId());
+        enrollmentDTO.setUserId(enrollment.getUser().getUserId());
+        enrollmentDTO.setCourseId(enrollment.getCourse().getCourseId());
+        enrollmentDTO.setTotalGrade(enrollment.getTotalGrade());
+        return enrollmentDTO;
+    }
+
+    public List<EnrollmentDTO> getEnrollmentsByCourseId(Long courseId) {
+        return null;
     }
 
 }

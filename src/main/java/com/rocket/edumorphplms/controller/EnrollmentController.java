@@ -2,6 +2,9 @@ package com.rocket.edumorphplms.controller;
 
 import com.rocket.edumorphplms.dto.EnrollmentDTO;
 import com.rocket.edumorphplms.service.EnrollmentService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,5 +31,14 @@ public class EnrollmentController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/byCourse/{courseId}")
+    public ResponseEntity<List<EnrollmentDTO>> getEnrollmentsByCourseId(@PathVariable Long courseId) {
+        List<EnrollmentDTO> enrollmentList = enrollmentService.getEnrollmentsByCourseId(courseId);
+        if (!enrollmentList.isEmpty()) {
+            return ResponseEntity.ok(enrollmentList);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

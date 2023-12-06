@@ -3,12 +3,15 @@ package com.rocket.edumorphplms.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.rocket.edumorphplms.dto.ContentDTO;
 import com.rocket.edumorphplms.entity.Content;
 import com.rocket.edumorphplms.entity.Course;
 import com.rocket.edumorphplms.repository.ContentRepository;
 import com.rocket.edumorphplms.repository.CourseRepository;
+
+import java.util.List;
 
 @Service
 public class ContentService {
@@ -56,5 +59,25 @@ public class ContentService {
             contentDTO.setContentName(content.getContentName());
             contentDTO.setContent(content.getContent());
             return contentDTO;
+    }
+
+    public List<ContentDTO> getContentsByCourseId(Long courseId) {
+        List<Content> contentList = contentRepository.findByCourseCourseId(courseId);
+
+        // Convert Content entities to ContentDTOs
+        List<ContentDTO> contentDTOList = contentList.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        return contentDTOList;
+    }
+
+    private ContentDTO convertToDTO(Content content) {
+        ContentDTO contentDTO = new ContentDTO();
+        contentDTO.setContentId(content.getContentId());
+        contentDTO.setCourseId(content.getCourse().getCourseId());
+        contentDTO.setContentName(content.getContentName());
+        contentDTO.setContent(content.getContent());
+        return contentDTO;
     }
 }

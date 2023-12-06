@@ -1,5 +1,7 @@
 package com.rocket.edumorphplms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,16 @@ public class ContentController {
         ContentDTO content = contentService.getContentById(contentId);
         if (content != null) {
             return ResponseEntity.ok(content);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    // Get Content by Course ID
+    @GetMapping("/byCourse/{courseId}")
+    public ResponseEntity<List<ContentDTO>> getContentsByCourseId(@PathVariable Long courseId) {
+        List<ContentDTO> contentList = contentService.getContentsByCourseId(courseId);
+        if (!contentList.isEmpty()) {
+            return ResponseEntity.ok(contentList);
         }
         return ResponseEntity.notFound().build();
     }
