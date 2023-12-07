@@ -12,6 +12,7 @@ import com.rocket.edumorphplms.dto.ContentDTO;
 
 @RestController
 @RequestMapping("/api/content")
+@CrossOrigin(origins = "*")
 public class ContentController {
 
     @Autowired

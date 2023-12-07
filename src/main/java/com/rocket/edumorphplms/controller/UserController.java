@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
@@ -39,7 +40,7 @@ public class UserController {
 
     @GetMapping("/authenticate")
     public ResponseEntity<UserDTO> authenticateUser(
-        @RequestParam(name = "email") String email,
+        @RequestParam(name = "userEmail") String email,
         @RequestParam(name = "password") String password) {
     try {
         UserDTO userDTO = userService.getUserByEmailAndPassword(email, password);

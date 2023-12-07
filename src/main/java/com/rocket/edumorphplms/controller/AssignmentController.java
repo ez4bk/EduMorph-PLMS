@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/assignments")
+@CrossOrigin(origins = "*")
 public class AssignmentController {
 
     @Autowired

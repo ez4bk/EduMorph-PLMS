@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequestMapping("/api/student-grades")
+@CrossOrigin(origins = "*")
 public class StudentGradeController {
 
     @Autowired
