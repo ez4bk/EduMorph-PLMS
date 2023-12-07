@@ -1,4 +1,4 @@
-# USE edumorph;
+USE edumorph;
 --
 -- Dumping data for table `Users`
 --
