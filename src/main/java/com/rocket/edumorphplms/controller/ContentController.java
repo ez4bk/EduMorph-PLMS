@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api/content")
-@Api(tags = "Content Controller")
 public class ContentController {
 
     @Autowired

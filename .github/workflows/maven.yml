@@ -29,6 +29,8 @@ jobs:
         cache: maven
     - name: Run MySQL Docker Composer
       run: docker-compose up -d
+#    - name: Dump Database
+#      run: docker exec -i edumorph-plms-mysql-server-1 mysql -u root -p root edumorph > ./sql-scripts/edumorphdb.sql
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 

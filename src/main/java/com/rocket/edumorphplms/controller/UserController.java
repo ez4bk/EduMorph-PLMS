@@ -17,7 +17,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-@Api(tags = "User Controller")
 public class UserController {
 
     @Autowired
@@ -68,7 +67,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not found")
     })
     public ResponseEntity<UserDTO> authenticateUser(
-        @RequestParam(name = "email") String email,
+        @RequestParam(name = "userEmail") String email,
         @RequestParam(name = "password") String password) {
         try {
             // Attempt to authenticate the user with the provided email and password

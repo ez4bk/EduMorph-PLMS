@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/enrollments")
-@Api(tags = "Enrollment Controller")
 public class EnrollmentController {
 
     @Autowired
@@ -51,6 +50,15 @@ public class EnrollmentController {
             return ResponseEntity.ok(enrollmentList);
         }
         // Return a NOT_FOUND response if no enrollments are found for the course
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/byUser/{userId}")
+    public ResponseEntity<List<EnrollmentDTO>> getEnrollmentsByUserId(@PathVariable Long userId) {
+        List<EnrollmentDTO> enrollmentList = enrollmentService.getEnrollmentsByUserId(userId);
+        if (!enrollmentList.isEmpty()) {
+            return ResponseEntity.ok(enrollmentList);
+        }
         return ResponseEntity.notFound().build();
     }
 }

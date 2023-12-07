@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
-@Api(tags = "Course Controller")
 public class CourseController {
 
     @Autowired

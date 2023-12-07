@@ -13,7 +13,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/assignments")
+
 @Api(tags = "Assignment Controller")
+
+@CrossOrigin(origins = "*")
+
 public class AssignmentController {
 
     @Autowired
