@@ -42,4 +42,13 @@ public class EnrollmentController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/byUser/{userId}")
+    public ResponseEntity<List<EnrollmentDTO>> getEnrollmentsByUserId(@PathVariable Long userId) {
+        List<EnrollmentDTO> enrollmentList = enrollmentService.getEnrollmentsByUserId(userId);
+        if (!enrollmentList.isEmpty()) {
+            return ResponseEntity.ok(enrollmentList);
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
