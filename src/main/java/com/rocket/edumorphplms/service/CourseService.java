@@ -27,12 +27,14 @@ public class CourseService {
     @Autowired
     private UserRepository userRepository;
 
+    // Create a new course
     public CourseDTO createCourse(CourseDTO courseDTO) {
         Course course = convertToCourseEntity(courseDTO);
         Course savedCourse = courseRepository.save(course);
         return convertToCourseDTO(savedCourse);
     }
 
+    // Get all courses
     public List<CourseDTO> getAllCourses() {
         List<Course> courses = courseRepository.findAll();
         return courses.stream()
@@ -40,6 +42,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    // Get courses taught by a specific instructor
     public List<CourseDTO> getCoursesByInstructor(UserDTO instructorDTO) {
         User instructor = convertToUserEntity(instructorDTO);
         List<Course> courses = courseRepository.findByInstructor(instructor);
@@ -48,6 +51,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    // Get a course by its ID
     public CourseDTO getCourseById(Long courseId) throws CourseNotFoundException {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException("Course not found with ID: " + courseId));
@@ -58,7 +62,7 @@ public class CourseService {
     }
 
     // Helper method to get enrolled students for a course
-    private List<UserDTO> getEnrolledStudents(Course course) {
+    public List<UserDTO> getEnrolledStudents(Course course) {
         List<Enrollment> enrollments = enrollmentRepository.findByCourse(course);
         List<Long> enrolledStudentIds = enrollments.stream()
                 .map(enrollment -> enrollment.getUser().getUserId())
@@ -69,6 +73,7 @@ public class CourseService {
                 .collect(Collectors.toList());
     }
 
+    // Convert Course entity to CourseDTO
     private CourseDTO convertToCourseDTO(Course course) {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setCourseId(course.getCourseId());
@@ -78,6 +83,7 @@ public class CourseService {
         return courseDTO;
     }
 
+    // Convert CourseDTO to Course entity
     private Course convertToCourseEntity(CourseDTO courseDTO) {
         Course course = new Course();
         course.setCourseName(courseDTO.getCourseName());
@@ -86,6 +92,7 @@ public class CourseService {
         return course;
     }
 
+    // Convert User entity to UserDTO
     private UserDTO convertToUserDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
@@ -96,6 +103,7 @@ public class CourseService {
         return userDTO;
     }
 
+    // Convert UserDTO to User entity
     private User convertToUserEntity(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());

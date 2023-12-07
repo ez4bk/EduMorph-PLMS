@@ -1,14 +1,27 @@
+app:
+  name: spring boot application
+  api:
+    title: Spring Boot APIs
+    version: 1.0.0
+    description: Spring Boot APIs description
+    base-package: com.rocket.edumorphplms.service
+    swagger:
+      enable: true
 server:
   port: 8081
 
+
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     generate-ddl: true
     hibernate:
-        ddl-auto: update
+      ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:3307/edumorph?createDatabaseIfNotExist=true
     username: root

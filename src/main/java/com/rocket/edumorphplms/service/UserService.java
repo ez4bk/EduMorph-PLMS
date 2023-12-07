@@ -17,6 +17,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    // Get user by ID
     public UserDTO getUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + userId + " not found"));
@@ -24,6 +25,7 @@ public class UserService {
         return convertToDTO(user);
     }
 
+    // Get all users
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
@@ -31,6 +33,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    // Convert User entity to UserDTO
     private UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();
         userDTO.setUserId(user.getUserId());
@@ -41,6 +44,7 @@ public class UserService {
         return userDTO;
     }
 
+    // Authenticate user by email and password
     public UserDTO getUserByEmailAndPassword(String email, String password) {
         Optional<User> userOptional = userRepository.findByEmail(email);
     
@@ -53,8 +57,4 @@ public class UserService {
     
         throw new UserNotFoundException("User with email " + email + " and password not found");
     }
-    
-    
-    
-    
 }
