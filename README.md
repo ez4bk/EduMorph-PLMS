@@ -31,3 +31,12 @@ that promote engagement, enhance performance, and empower both learners and
 educators to excel in a rapidly evolving digital age.
 This innovative approach promises to transform the way we teach and learn, fostering a 
 more personalized, efficient, and effective educational ecosystem.
+
+Technologies Utilized
+Edumorph harnesses a powerful stack of technologies to provide a robust and feature-rich learning management experience:
+
+Spring Boot: Empowering the backend with rapid development capabilities.
+MySQL: Serving as the backbone database engine to store and manage academic data securely.
+Docker: Facilitating seamless deployment and scaling through containerization.
+
+With Edumorph, your educational institution stands at the forefront of personalized learning management, empowering you to deliver tailored educational experiences and streamline administrative workflows. Elevate the learning journey for all stakeholders with Edumorph!
